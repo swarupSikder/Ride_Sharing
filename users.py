@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from ride import RideRequest, RideMatch
+from ride import Ride, RideRequest, RideMatch, RideSharing
 
-class User:
+class User(ABC):
     def __init__(self, name, email, nid):
         self.name = name
         self.email = email
@@ -35,11 +35,18 @@ class Rider(User):
         ride_req = RideRequest(self, destination)
         ride_matching = RideMatch(ride_sharing.drivers)
         ride = ride_matching.find_drivers(ride_req, vehicle_type)
+        ride.rider = self
         self.current_ride = ride 
         print('Yes! I got a ride!')
 
     def show_current_ride(self):
-        print(self.current_ride)
+        print('\n---------(Ride Details)-----------')
+        print(f'Rider: {self.name}')
+        print(f'Driver: {self.current_ride.driver.name}')
+        print(f'Selected Car: {self.current_ride.vehicle.vehicle_type}')
+        print(f'Start Location: {self.current_ride.start_location}')
+        print(f'End Location: {self.current_ride.end_location}')
+        print(f'Total Cost: {self.current_ride.estimated_fare}')
 
 class Driver(User):
     def __init__(self, name, email, nid, current_location):
@@ -51,4 +58,8 @@ class Driver(User):
         print(f'Driver Name : {self.name}')
 
     def accept_ride(self, ride):
+        ride.start_ride()
         ride.set_driver(self)
+
+    def reach_destination(self, ride):
+        ride.end_ride()

@@ -1,4 +1,4 @@
-from ride import Ride, RideRequest, RideMatch, RideSharing
+from ride import RideSharing
 from users import Rider, Driver
 from vehicle import Car, Bike
 
@@ -11,4 +11,7 @@ kolim = Driver('kolim', 'kolim@k.com', 123123, 'Gulshan')
 niye_jao.add_driver(kolim)
 
 
+rahim.requestRide(niye_jao, "Uttara", 'car')
+rahim.show_current_ride()
+kolim.reach_destination(rahim.current_ride)
 print(niye_jao)

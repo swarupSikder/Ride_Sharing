@@ -1,5 +1,4 @@
 from datetime import datetime
-from users import User, Rider, Driver
 from vehicle import Car, Bike
 
 
@@ -23,15 +22,15 @@ class RideSharing:
 
 
 class Ride:
-    def __init__(self, start_location, end_location, vehicle_type):
+    def __init__(self, start_location, end_location, vehicle):
         self.start_location = start_location
         self.end_location = end_location
-        self.vehicle_type = vehicle_type
+        self.vehicle = vehicle
         self.driver = None
         self.rider = None
         self.start_time = None
         self.end_time = None
-        self.estimated_fare = None
+        self.estimated_fare = self.calc_fare(vehicle.vehicle_type)
 
     def set_driver(self, driver):
         self.driver = driver
@@ -47,7 +46,16 @@ class Ride:
     def __repr__(self):
         return f'Ride details: From {self.start_location} to {self.end_location}'
     
+    # total cost / fare
+    def calc_fare(self, vehicle):
+        distance = 10
 
+        fare_per_km = {
+            'car' : 30,
+            'bike' : 20,
+            'cng' : 10,
+        }
+        return distance * fare_per_km.get(vehicle)
 
 
 class RideRequest:
@@ -68,7 +76,7 @@ class RideMatch:
             driver = self.available_drivers[0]
             
             if vehicle_type == 'car':
-                vehicle = Car('Car', 'AB12020', 30)
+                vehicle = Car('car', 'AB12020', 30)
             elif vehicle_type == 'bike':
                 vehicle = Bike('bike', 'AB12030', 40)
             
