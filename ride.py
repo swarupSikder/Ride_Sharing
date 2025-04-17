@@ -1,4 +1,5 @@
 from datetime import datetime
+from users import User, Rider, Driver
 
 class Ride:
     def __init__(self, start_location, end_location):
@@ -23,3 +24,25 @@ class Ride:
 
     def __repr__(self):
         return f'Ride details: From {self.start_location} to {self.end_location}'
+    
+
+
+
+class RideRequest:
+    def __init__(self, rider, end_location):
+        self.rider = rider
+        self.end_location = end_location
+
+
+
+
+class RideMatch:
+    def __init__(self, drivers):
+        self.available_drivers = drivers
+
+    def find_drivers(self, ride_request):
+        if len(self.available_drivers) > 0:
+            print('Looking for drivers...')
+            driver = self.available_drivers[0]
+            ride = Ride(ride_request.rider.current_location, ride_request.end_location)
+            driver.accept_ride(ride)

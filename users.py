@@ -46,4 +46,4 @@ class Driver(User):
         print(f'Driver Name : {self.name}')
 
     def accept_ride(self, ride):
-        pass
+        ride.set_driver(self)
