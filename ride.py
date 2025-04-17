@@ -1,5 +1,6 @@
 from datetime import datetime
 from users import User, Rider, Driver
+from vehicle import Car, Bike
 
 
 
@@ -22,9 +23,10 @@ class RideSharing:
 
 
 class Ride:
-    def __init__(self, start_location, end_location):
+    def __init__(self, start_location, end_location, vehicle_type):
         self.start_location = start_location
         self.end_location = end_location
+        self.vehicle_type = vehicle_type
         self.driver = None
         self.rider = None
         self.start_time = None
@@ -60,9 +62,16 @@ class RideMatch:
     def __init__(self, drivers):
         self.available_drivers = drivers
 
-    def find_drivers(self, ride_request):
+    def find_drivers(self, ride_request, vehicle_type):
         if len(self.available_drivers) > 0:
             print('Looking for drivers...')
             driver = self.available_drivers[0]
-            ride = Ride(ride_request.rider.current_location, ride_request.end_location)
+            
+            if vehicle_type == 'car':
+                vehicle = Car('Car', 'AB12020', 30)
+            elif vehicle_type == 'bike':
+                vehicle = Bike('bike', 'AB12030', 40)
+            
+            ride = Ride(ride_request.rider.current_location, ride_request.end_location, vehicle)
             driver.accept_ride(ride)
+            return ride
